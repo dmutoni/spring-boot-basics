@@ -15,7 +15,7 @@ public class AppFailureException {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponse> handleAnyError(RuntimeException exception) {
-        return ResponseEntity.badRequest().body(ApiResponse.badRequest(exception.getMessage(), null));
+        return ResponseEntity.badRequest().body(ApiResponse.badRequest(exception.getMessage(), exception.getStackTrace()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
