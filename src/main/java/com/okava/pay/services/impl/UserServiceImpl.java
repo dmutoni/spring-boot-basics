@@ -1,5 +1,6 @@
 package com.okava.pay.services.impl;
 
+import com.okava.pay.services.MailService;
 import com.okava.pay.utils.Utility;
 import com.okava.pay.utils.dtos.RegisterDTO;
 import com.okava.pay.utils.exceptions.BadRequestException;
@@ -8,22 +9,26 @@ import com.okava.pay.models.User;
 import com.okava.pay.models.enums.ERole;
 import com.okava.pay.repositories.IUserRepository;
 import com.okava.pay.services.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import javax.mail.MessagingException;
 import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements IUserService {
 
     private final IUserRepository userRepository;
+    private final MailService mailService;
 
-    public UserServiceImpl(IUserRepository userRepository) {
+    @Autowired
+    public UserServiceImpl(IUserRepository userRepository, MailService mailService) {
         this.userRepository = userRepository;
+        this.mailService = mailService;
     }
 
     @Override
@@ -54,13 +59,27 @@ public class UserServiceImpl implements IUserService {
         if (!isUnique(user))
             throw new BadRequestException("The provided email is already used in the app");
 
-        return userRepository.save(user);
+        user = userRepository.save(user);
+
+        mailService.sendTestEmail(user.getEmail(), "123457");
+
+        return user;
     }
 
     @Override
     public boolean isUnique(User user) {
-        Optional<User> userOptional = this.userRepository.findByEmailOrPhoneNumberOrNationalId(user.getEmail(), user.getPhoneNumber(), user.getNationalId());
-        return userOptional.isEmpty();
+        if(user.getEmail() != null)
+            if( userRepository.findByEmail(user.getEmail()).isPresent())
+                return false;
+
+        if(user.getPhoneNumber() != null)
+            if( userRepository.findByPhoneNumber(user.getPhoneNumber()).isPresent())
+                return false;
+
+        if(user.getNationalId() != null)
+            return userRepository.findByPhoneNumber(user.getNationalId()).isEmpty();
+
+        return true;
     }
 
     @Override

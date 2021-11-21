@@ -6,6 +6,7 @@ import com.okava.pay.utils.dtos.RegisterDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.mail.MessagingException;
 import java.util.UUID;
 
 public interface IUserService {

@@ -1,13 +1,17 @@
 package com.okava.pay.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 public class School {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID id;
 
@@ -17,52 +21,13 @@ public class School {
     @Column(name = "location", nullable = false)
     private String location;
 
-    @Column(name = "headMaster", nullable = false)
+    @Column(name = "head_master", nullable = false)
     private String headMaster;
 
-    @Column(name = "userName", nullable = true)
+    @Column(name = "user_name")
     private String userName;
 
     public School() {
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getHeadMaster() {
-        return headMaster;
-    }
-
-    public void setHeadMaster(String headMaster) {
-        this.headMaster = headMaster;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 }

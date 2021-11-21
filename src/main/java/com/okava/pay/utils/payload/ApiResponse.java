@@ -20,6 +20,10 @@ public class ApiResponse {
         return new ApiResponse(HttpStatus.OK, true, message, null);
     }
 
+    public static ApiResponse success(String message, Object object) {
+        return new ApiResponse(HttpStatus.OK, true, message, object);
+    }
+
     public static ApiResponse success(Object data) {
         return new ApiResponse(HttpStatus.OK, true, null, data);
     }

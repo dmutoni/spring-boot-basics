@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.UUID;
 
 public interface ISchoolService {
+
     Page<School> all(Pageable pageable);
 
     School findById(UUID id);
@@ -16,6 +17,8 @@ public interface ISchoolService {
 
     School create(RegisterSchoolDTO dto);
 
-    boolean isUnique(School school);
+    School update(UUID id, RegisterSchoolDTO dto);
+
+    boolean isUnique(String schoolName);
 
 }

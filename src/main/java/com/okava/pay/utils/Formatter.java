@@ -12,4 +12,8 @@ public class Formatter {
     public static ResponseEntity<ApiResponse> ok(Object data) {
         return ResponseEntity.ok(ApiResponse.success(data));
     }
+
+    public static ResponseEntity<ApiResponse> ok(String message, Object data) {
+        return ResponseEntity.ok(ApiResponse.success(message, data));
+    }
 }
